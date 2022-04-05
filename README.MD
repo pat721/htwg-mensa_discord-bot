@@ -11,5 +11,5 @@ A very simple bot, that scrapes the htwg mensa website and extracts the meals to
 - [x] request sides (beilagen)
 - [x] requests for today or tomorrow
 - [x] request combinations (e.g. main with sides of tomorrow)
-- [] beautify and refactor code
+- [ ] beautify and refactor code
 
