@@ -1,12 +1,10 @@
 const { Client, Intents } = require('discord.js');
 const config = require("./config.json");
-const cheerio = require('cheerio');
-const axios = require('axios');
+const { extractCommand, httpWebsiteRequest } = require("./helpers");
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 const prefix = '!';
-const htwgMensaUrl = 'https://seezeit.com/essen/speiseplaene/mensa-htwg/';
 
 // usable commands
 // mensa (today/tomorrow) - lists all meals that are available today/tomorrow. day is optional.
@@ -15,54 +13,61 @@ const htwgMensaUrl = 'https://seezeit.com/essen/speiseplaene/mensa-htwg/';
 // pasta (vegie) (today/tomorrow) - lists the pasta meal, vegetarian or meat, from today or tomorrow. day and vegetarian is optional.
 // sides (today/tomorrow) - lists all the sides from today or tomorrow
 
-commandArray = ['mensa', 'main', 'seezeit-teller', 'option', 'kombinierbar', 'pasta', 'vegie', 'sides', 'today', 'tomorrow'];
+const wholeCommandsArray = ['mensa', 'main', 'seezeit-teller', 'option', 'kombinierbar', 'pasta', 'vegie', 'sides', 'today', 'tomorrow'];
 
-client.on("messageCreate", function(message) { 
+client.on("messageCreate", async function(message) { 
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const commands = extractCommand(message);
 
-    if(commandArray.includes(commands[0])) {
-        if(commands[0] === 'mensa') {
-            if(commands[1] === 'tomorrow') {
-                // return meal list of tomorrow
+    if (wholeCommandsArray.includes(commands[0])) {
+        var mealMessage = "";
+        if (commands[0] === 'mensa') {
+            const mensaMealCategoryArray = ['main', 'option', 'pasta', 'vegie', 'sides'];
+            for (const mealCategory of mensaMealCategoryArray) {
+                const meal = await httpWebsiteRequest(mealCategory, commands[1])
+                mealMessage += `${meal} \n\n`
             }
-            // return meal list of today
-        } else if(commands[0] === ('main' || 'seezeit-teller')) {
-            if(commands[1] === 'sides') {
-                if(commands[2] === 'tomorrow') {
-                    // return main with sides of tomorrow
+        } else if (commands[0] === 'main' || commands[0] === 'seezeit-teller') {
+            if (commands[1] === 'sides') {
+                const mainWithSidesArray = ['main', 'sides'];
+                for (const mealCategory of mainWithSidesArray) {
+                    const meal = await httpWebsiteRequest(mealCategory, commands[2])
+                    mealMessage += `${meal} \n\n`
                 }
-
-            } else if(commands[1] === 'tomorrow') {
-                // return main of tomorrow
-
+            } else {
+                const meal = await httpWebsiteRequest(commands[0], commands[1])
+                mealMessage += `${meal} \n\n`
             }
-            // return main of today
-        } // check option
-        // check pasta
-        // check sides
+        } else if (commands[0] === 'option' || commands[0] === 'kombinierbar') {
+            if (commands[1] === 'sides') {
+                const optionWithSidesArray = ['option', 'sides'];
+                for (const mealCategory of optionWithSidesArray) {
+                    const meal = await httpWebsiteRequest(mealCategory, commands[2])
+                    mealMessage += `${meal} \n\n`
+                }
+            } else {
+                const meal = await httpWebsiteRequest(commands[0], commands[1])
+                mealMessage += `${meal} \n\n`
+            }
+        } else if (commands[0] === 'pasta') {
+            if (commands[1] === 'vegie') {
+                const pastaArray = ['pasta', 'vegie'];
+                for (const mealCategory of pastaArray) {
+                    const meal = await httpWebsiteRequest(mealCategory, commands[2])
+                    mealMessage += `${meal} \n\n`
+                }
+            } else {
+                const meal = await httpWebsiteRequest(commands[0], commands[1])
+                mealMessage += `${meal} \n\n`
+            }
+        } else if (commands[0] === 'sides') {
+            const meal = await httpWebsiteRequest(commands[0], commands[1])
+            mealMessage += `${meal} \n\n`
+        }
+        message.reply(`${mealMessage}`)
     }
 });
-
-function extractCommand(message) {
-    const commandBody = message.content.slice(prefix.length).toLowerCase();
-    const commands = commandBody.split(' ')
-    return commands;
-}
-
-function httpWebsiteRequest() {
-    axios.get(htwgMensaUrl).then( res => {
-        const $ = cheerio.load(res.data);
-
-        const meal = $('.contents_1').find('.speiseplanTagKat').filter(function() {
-            return $(this).find('.category').text() === 'Seezeit-Teller'
-        }).find('.title').text().replace(/\(.*\)/,'')
-
-        message.reply(`:fork_and_knife: ${meal} :fork_and_knife:`)
-    });
-}
-
 
 client.login(config.BOT_TOKEN);
