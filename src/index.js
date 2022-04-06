@@ -6,13 +6,6 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 
 const prefix = '!';
 
-// usable commands
-// mensa [today/tomorrow] - lists all meals that are available today/tomorrow. day is optional.
-// main [seezeit-teller] [sides] [today/tomorrow] - lists the main meal (Seezeit-Teller) from today or tomorrow.
-// option [kombinierbar] [sides] [today/tomorrow] - lists the option meal (KombinierBar) from today or tomorrow.
-// pasta [vegie] [today/tomorrow] - lists the pasta meal, vegetarian or meat, from today or tomorrow.
-// sides [today/tomorrow] - lists all the sides from today or tomorrow.
-
 var usableBotCommands = `
 ##############################
 # USABLE HTWG-MENSA-BOT COMMANDS:
