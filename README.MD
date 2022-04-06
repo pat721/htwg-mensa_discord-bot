@@ -2,6 +2,10 @@
 
 A very simple bot, that scrapes the htwg mensa website and extracts the meals to display them in discord.
 
+# Setup
+
+Just host the node application with an environment variable "BOT_TOKEN" that has your discord bot's token as the value.
+
 # Functionalities
 
 - [x] request all available menus
