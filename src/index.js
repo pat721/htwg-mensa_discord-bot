@@ -1,5 +1,5 @@
 const { Client, Intents } = require('discord.js');
-const config = require("../config.json");
+const config = require('dotenv').config()
 const { extractCommand, httpWebsiteRequest } = require("./helpers");
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
@@ -80,4 +80,4 @@ client.on("messageCreate", async function(message) {
     }
 });
 
-client.login(config.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
