@@ -28,4 +28,5 @@ NOTE: All Parameters in Brackets [ ] are optional and extend the basic output (e
 - [x] request combinations (e.g. main with sides of tomorrow)
 - [ ] beautify and refactor code
 - [ ] reduce branching
+- [ ] move to more modern slash-commands
 - [ ] add setup guide
