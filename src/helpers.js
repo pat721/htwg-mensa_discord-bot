@@ -45,6 +45,20 @@ async function httpWebsiteRequest(mealCategory, day) {
     return `**${internalMealCategory}**: ${mealMessage}`;
 }
 
+function generateDateMessage(commands) {
+    const today = new Date();
+
+    const tomorrow = new Date;
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    if (commands.includes("tomorrow")) {
+
+        return `***Morgen, am ${tomorrow.toLocaleDateString("de")}, gibt's***: \n`
+    }
+    return `***Heute, am ${today.toLocaleDateString("de")}, gibt's***: \n`
+}
+
 exports.httpWebsiteRequest = httpWebsiteRequest;
 exports.extractCommand = extractCommand;
+exports.generateDateMessage = generateDateMessage;
 exports.convertCommandToHTMLCategory = convertCommandToHTMLCategory;

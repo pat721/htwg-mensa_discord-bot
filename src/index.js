@@ -1,6 +1,6 @@
 const { Client, Intents } = require('discord.js');
 const config = require('dotenv').config()
-const { extractCommand, httpWebsiteRequest } = require("./helpers");
+const { extractCommand, httpWebsiteRequest, generateDateMessage } = require("./helpers");
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -26,7 +26,7 @@ client.on("messageCreate", async function(message) {
     const commands = extractCommand(message);
 
     if (wholeCommandsArray.includes(commands[0])) {
-        var replyMessage = "";
+        var replyMessage = generateDateMessage(commands);
         if(commands[0] === 'mensa-help') {
             replyMessage += usableBotCommands;
         } else if (commands[0] === 'mensa') {
