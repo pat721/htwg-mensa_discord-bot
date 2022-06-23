@@ -13,6 +13,7 @@ function convertCommandToHTMLCategory(command) {
     switch (command) {
         case 'seezeit-teller': //fall-through to main
         case 'main': return 'Seezeit-Teller';
+        case 'hinweg': return 'hin&weg';
         case 'kombinierbar': //fall-through to option
         case 'option': return 'KombinierBar';
         case 'pasta': return 'Pastastand';
