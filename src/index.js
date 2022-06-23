@@ -11,13 +11,14 @@ var usableBotCommands = `
 # USABLE HTWG-MENSA-BOT COMMANDS:
 # !mensa [today/tomorrow] - lists all meals that are available today/tomorrow. day is optional.
 # !main or !seezeit-teller [sides] [today/tomorrow] - lists the main meal (Seezeit-Teller) from today or tomorrow.
+# !hinweg [sides] [today/tomorrow] - lists the hin&weg meal from today or tomorrow.
 # !option or !kombinierbar [sides] [today/tomorrow] - lists the option meal (KombinierBar) from today or tomorrow.
 # !pasta [vegie] [today/tomorrow] - lists the pasta meal, vegetarian or meat, from today or tomorrow.
 # !sides [today/tomorrow] - lists all the sides from today or tomorrow.
 ##############################
 `
 
-const wholeCommandsArray = ['mensa', 'main', 'seezeit-teller', 'option', 'kombinierbar', 'pasta', 'vegie', 'sides', 'today', 'tomorrow', 'mensa-help'];
+const wholeCommandsArray = ['mensa', 'main', 'seezeit-teller', 'hinweg' ,'option', 'kombinierbar', 'pasta', 'vegie', 'sides', 'today', 'tomorrow', 'mensa-help'];
 
 client.on("messageCreate", async function(message) { 
 
@@ -30,7 +31,7 @@ client.on("messageCreate", async function(message) {
         if(commands[0] === 'mensa-help') {
             replyMessage += usableBotCommands;
         } else if (commands[0] === 'mensa') {
-            const mensaMealCategoryArray = ['main', 'option', 'pasta', 'vegie', 'sides'];
+            const mensaMealCategoryArray = ['main', 'hinweg' ,'option', 'pasta', 'vegie', 'sides'];
             for (const mealCategory of mensaMealCategoryArray) {
                 const meal = await httpWebsiteRequest(mealCategory, commands[1])
                 replyMessage += `${meal} \n\n`
@@ -39,6 +40,17 @@ client.on("messageCreate", async function(message) {
             if (commands[1] === 'sides') {
                 const mainWithSidesArray = ['main', 'sides'];
                 for (const mealCategory of mainWithSidesArray) {
+                    const meal = await httpWebsiteRequest(mealCategory, commands[2])
+                    replyMessage += `${meal} \n\n`
+                }
+            } else {
+                const meal = await httpWebsiteRequest(commands[0], commands[1])
+                replyMessage += `${meal} \n\n`
+            }
+        } else if (commands[0] === 'hinweg') {
+            if (commands[1] === 'sides') {
+                const hinwegWithSidesArray = ['hinweg', 'sides'];
+                for (const mealCategory of hinwegWithSidesArray) {
                     const meal = await httpWebsiteRequest(mealCategory, commands[2])
                     replyMessage += `${meal} \n\n`
                 }
