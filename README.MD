@@ -11,6 +11,7 @@ Just host the node application with an environment variable "BOT_TOKEN" that has
 - !mensa-help to let the bot list all possible commands. (basically this list)
 - !mensa [today/tomorrow] - lists all meals that are available today/tomorrow.
 - !main or !seezeit-teller [sides] [today/tomorrow] - lists the main meal (Seezeit-Teller) from today or tomorrow.
+- !hinweg [sides] [today/tomorrow] - lists the hin&weg meal from today or tomorrow.
 - !option or !kombinierbar [sides] [today/tomorrow] - lists the option meal (KombinierBar) from today or tomorrow.
 - !pasta [vegie] [today/tomorrow] - lists the pasta meal, vegetarian or meat, from today or tomorrow.
 - !sides [today/tomorrow] - lists all the sides from today or tomorrow.
